@@ -35,7 +35,7 @@ document.getElementsByTagName("head")[0].appendChild(scriptHeader);
 var scriptDescr = document.createElement('script');
 scriptDescr.type = 'text/javascript';
 var scriptDescr_innerHTML =  'function setDescr(aTr, aDescr) {\
-/* debug newWin.document.write(aDescr.firstChild.textContent); */ \
+/* debug */ newWin.document.write(aDescr.firstChild.textContent); /**/ \
 var cell_descr=aTr.insertCell(0); \
 cell_descr.innerHTML=aDescr.firstChild.textContent;\
 cell_descr.style.fontSize="12"; \
@@ -43,7 +43,7 @@ cell_descr.colSpan=2; \
 return;\
 }' ;
 scriptDescr.innerHTML =  'function setDescr(aCellDescr, aDescr) {\
-/* debug newWin.document.write(aDescr.firstChild.textContent); */ \
+/* debug */ newWin.document.write(aDescr.firstChild.textContent); /**/ \
 aCellDescr.innerHTML=aDescr.firstChild.textContent;\
 aCellDescr.style.fontSize="12"; \
 aCellDescr.colSpan=2; \
@@ -66,26 +66,31 @@ aCellList.rowSpan=2; \
 aCellList.style.fontSize="11"; \
 aCellList.style.verticalAlign="top"; \
 aCellList.style.width="200px"; \
-return;\
+var loc_tags; /* TO REMOVE */\
+for (var i=0; i<aList.children.length; i++) { \
+  /* debug newWin.document.write("loc_tags loop i="+i +"<br>"); */ \
+  /* read gocreester.gif */ var imgs=aList.children[i].getElementsByTagName("img"); /**/\
+                            loc_tags+=imgs; /**/\
+}\
+if (loc_tags === undefined) return; else return loc_tags; \
 }';
 document.getElementsByTagName("head")[0].appendChild(scriptList);
 
 var scriptPicture = document.createElement('script');
 scriptPicture.type = 'text/javascript';
-scriptPicture.innerHTML =  'function setPicture(aTr, aPicture) {\
-var cell_pic=aTr.insertCell(1); \
-cell_pic.style.transform="scale(0.7, 0.7)" ; /**/\
-cell_pic.style.width=Math.max(85, Math.round(0.7*aPicture.firstChild.firstChild.clientWidth)) ; \
-cell_pic.style.height=Math.round(0.7*aPicture.firstChild.firstChild.clientHeight) ; \
-/* debug newWin.document.write("cell_pic.style.width="+cell_pic.style.width); */ \
-/* debug newWin.document.write("cell_pic.style.height="+cell_pic.style.height); */ \
-cell_pic.style.padding = "0px 20px 5px 0px"; \
-cell_pic.style.margin = "0px 0px"; \
-cell_pic.style.verticalAlign="top"; \
-cell_pic.style.horizontalAlign="left"; \
-/* IMPORTANT */ cell_pic.style.cssFloat="left"; \
-cell_pic.innerHTML="<img src="+aPicture.firstChild.firstChild.src + ">"; \
-return cell_pic.style.width; \
+scriptPicture.innerHTML =  'function setPicture(aCellPic, aPicture) {\
+aCellPic.style.transform="scale(0.7, 0.7)" ; /**/\
+aCellPic.style.width=Math.max(85, Math.round(0.7*aPicture.firstChild.firstChild.clientWidth)) ; \
+aCellPic.style.height=Math.round(0.7*aPicture.firstChild.firstChild.clientHeight) ; \
+/* debug newWin.document.write("aCellPic.style.width="+aCellPic.style.width +"<br>"); */ \
+/* debug newWin.document.write("aCellPic.style.height="+aCellPic.style.height +"<br>"); */ \
+aCellPic.style.padding = "0px 30px 5px 0px"; \
+aCellPic.style.margin = "0px 0px"; \
+aCellPic.style.verticalAlign="top"; \
+aCellPic.style.horizontalAlign="left"; \
+/* IMPORTANT */ aCellPic.style.cssFloat="left"; \
+aCellPic.innerHTML="<img src="+aPicture.firstChild.firstChild.src + ">"; \
+return aCellPic.style.width; \
 }';
 document.getElementsByTagName("head")[0].appendChild(scriptPicture);
 
@@ -98,6 +103,7 @@ if (pos_dots > 0) { \
    var price_arr=price_text.split("…"); \
    price_text="от "+price_arr[0] + " р.";\
 } \
+/* debug newWin.document.write("price_text="+price_text); */ \
 aCellPrice.innerHTML=price_text; \
 aCellPrice.align="center"; \
 aCellPrice.style.fontSize="16"; \
@@ -105,7 +111,7 @@ aCellPrice.style.fontWeight="bold"; \
 aCellPrice.style.fontStyle="italic"; \
 aCellPrice.style.width=aPriceWidth ; \
 aCellPrice.style.height="20px" ; \
-aCellPrice.style.padding = "0px 0px 0px 0px"; \
+aCellPrice.style.padding = "10px 0px 0px 0px"; \
 /* aCellPrice.colSpan=2; */ \
 }';
 document.getElementsByTagName("head")[0].appendChild(scriptPrice);
@@ -118,29 +124,41 @@ var newTab=aWin.document.createElement("table") ;\
 setHeader(newTab, aHeaderToPrint); \
 /****************** Description */ \
 var shortToPrint=aCatalogItem.getElementsByClassName("catalog-item-text"); \
-var tr1 = aWin.document.createElement("tr"); \
-var cell_descr=tr1.insertCell(0); \
-setDescr(cell_descr, shortToPrint[0]); \
-/****************** List */ \
-var tr2 = aWin.document.createElement("tr"); \
-var cell_list=tr2.insertCell(0); \
-setList(cell_list, shortToPrint[0]); \
-for (var i=0; i<shortToPrint[0].children.length; i++) { \
-  /* read gocreester.gif */ var tags=shortToPrint[0].children[i].getElementsByTagName("img"); /**/\
-}\
-/****************** Picture */\
-var pictureToPrint=aCatalogItem.getElementsByClassName("catalog-item-picture"); \
-var pic_width=setPicture(tr2,pictureToPrint[0]); \
+/* debug newWin.document.write("shortToPrint.length="+shortToPrint.length +"<br>"); */ \
+if (shortToPrint.length > 0 ) { \
+  var tr1 = aWin.document.createElement("tr"); \
+  var cell_descr=tr1.insertCell(0); \
+  /* setDescr(cell_descr, shortToPrint[0]); */ \
+  /****************** List */ \
+  var tr2 = aWin.document.createElement("tr"); \
+  var cell_list=tr2.insertCell(0); \
+  var tags = setList(cell_list, shortToPrint[0]); \
+  /****************** Picture */\
+  var pictureToPrint=aCatalogItem.getElementsByClassName("catalog-item-picture"); \
+  var cell_pic=tr2.insertCell(1); \
+  setPicture(cell_pic,pictureToPrint[0]); \
+} \
 /****************** Price */\
 var PriceToPrint=aCatalogItem.getElementsByClassName("catalog-item-price catalog-item-cloud"); \
 var tr3 = aWin.document.createElement("tr"); \
 var cell_price=tr3.insertCell(0);\
-setPrice(cell_price, PriceToPrint[0], pic_width); \
+setPrice(cell_price, PriceToPrint[0], cell_pic.style.width); \
 /****************** Add table rows */\
 /* newTab.appendChild(tr1); */\
 newTab.appendChild(tr2);\
 newTab.appendChild(tr3);\
-for (img=0; img<tags.length; img++) { aWin.document.write(tags[img].outerHTML); } \
+/* debug newWin.document.write("Before tags loop<br>"); */ \
+/* \
+if (tags !== undefined) { \
+  for (var i=0; i<tags.length; i++) { \
+    if (tags[i] !== undefined) { \
+   }\
+  }\
+}\
+*/ \
+     /* debug newWin.document.write("tags[" +i+ "].length=" +tags[i].length+"<br>"); */ \
+     /*for (img=0; img<tags[i].length; img++) { aWin.document.write(tags[i][img].outerHTML); } */\
+/* IMPORTANT */ newWin.document.write("<span></span>");\
 newTab.style.pageBreakInside = "avoid"; \
 aWin.document.body.appendChild(newTab); \
 }';
@@ -177,11 +195,15 @@ newWin= window.open(""); \
 var catIterator=document.getElementById("catalog_items_content"); \
 for (var j=0; j<catIterator.children.length; j++) { \
   var catItem=catIterator.children[j]; \
+  var Price=catItem.getElementsByClassName("catalog-item-price catalog-item-cloud"); \
   if ( catItem.clientHeight === 0) { continue; } \
-  var headers=catItem.getElementsByClassName("catalog_item_name_content"); \
-  var headerToPrint=headers[0]; \
-  printItem(newWin, catItem, headerToPrint); \
-  newWin.document.write("--------------------------------------------------------------------"); \
+  /* debug newWin.document.write("Price.length=",Price.length); */\
+  if ( Price.length > 0) { \
+    var headers=catItem.getElementsByClassName("catalog_item_name_content"); \
+    var headerToPrint=headers[0]; \
+    printItem(newWin, catItem, headerToPrint); \
+  }\
+  newWin.document.write("<br>"); \
 }\
 /****************** CSS */\
 var css = "table {width: 285px; background: #FFB547; border: 1px none;} td {height: 20px; background: #FFB547; border: 1px dashed #FFB547;}" ; \
