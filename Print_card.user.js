@@ -13,12 +13,13 @@ scriptHeader.type = 'text/javascript';
 scriptHeader.innerHTML =  'function setHeader(aTab, aHeader) {\
 /* debug newWin.document.write(aHeader.outerHTML); */ \
 var theader=aTab.createTHead(); \
-var hrow=theader.insertRow(0); \
 var d = new Date(); \
 var year = d.getFullYear(); \
 var month = (1 + d.getMonth()).toString(); \
 month = month.length > 1 ? month : "0" + month; \
 var mmyy=month+"."+year.toString().substring(2); \
+/* text of header*/\
+var hrow=theader.insertRow(0); \
 var hcell=hrow.insertCell(0); \
 hcell.innerHTML=aHeader.textContent; \
 hcell.style.fontStyle="italic"; \
@@ -28,6 +29,12 @@ hcell.colSpan=2; \
 hcell.cssFloat="right"; \
 hcell.style.padding = "2px 0px 0px 5px"; \
 hcell.style.borderBottom = "thick solid #4C2E00"; \
+var imgMMYY=newWin.document.createElement("img"); \
+imgMMYY.innerHTML=mmyy; \
+imgMMYY.style.cssFloat= "right"; \
+imgMMYY.style.fontSize= "7"; \
+imgMMYY.style.margin="10px 0px 0px 0px"; \
+hcell.appendChild(imgMMYY);\
 return;\
 }' ;
 document.getElementsByTagName("head")[0].appendChild(scriptHeader);
@@ -173,7 +180,7 @@ var itemDiv=document.getElementById("content"); \
 var headerToPrint=document.getElementById("pageheader"); \
 printItem(newWin, itemDiv, headerToPrint); \
 /****************** CSS */\
-var css = "table {width: 285px; background: #FFB547; border: 1px none;} td {height: 20px; background: #FFB547; border: 1px dashed #FFB547;}" ; \
+var css = "table {width: 285px; background: #FFB547; border: 1px none;} td {height: 20px; background: #FFB547; border: 1px dashed #FFB547;}"; \
 var head = document.head || document.getElementsByTagName("head")[0]; \
 var style=newWin.document.createElement("style"); \
 style.type = "text/css"; \
