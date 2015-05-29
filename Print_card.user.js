@@ -21,20 +21,22 @@ var mmyy=month+"."+year.toString().substring(2); \
 /* text of header*/\
 var hrow=theader.insertRow(0); \
 var hcell=hrow.insertCell(0); \
-hcell.innerHTML=aHeader.textContent; \
-hcell.style.fontStyle="italic"; \
-hcell.style.fontWeight="bold"; \
-hcell.style.fontSize="18"; \
-hcell.colSpan=2; \
-hcell.cssFloat="right"; \
-hcell.style.padding = "2px 0px 0px 5px"; \
-hcell.style.borderBottom = "thick solid #4C2E00"; \
 var imgMMYY=newWin.document.createElement("img"); \
 imgMMYY.innerHTML=mmyy; \
 imgMMYY.style.cssFloat= "right"; \
 imgMMYY.style.fontSize= "7"; \
-imgMMYY.style.margin="10px 0px 0px 0px"; \
+imgMMYY.style.margin="0px"; \
 hcell.appendChild(imgMMYY);\
+var divHeader=newWin.document.createElement("div"); \
+divHeader.innerHTML=aHeader.textContent; \
+divHeader.style.fontWeight="bold"; \
+divHeader.style.fontSize="18"; \
+hcell.appendChild(divHeader);\
+hcell.colSpan=2; \
+hcell.cssFloat="right"; \
+hcell.style.fontStyle="italic"; \
+hcell.style.padding = "2px 0px 0px 5px"; \
+hcell.style.borderBottom = "thick solid #4C2E00"; \
 return;\
 }' ;
 document.getElementsByTagName("head")[0].appendChild(scriptHeader);
