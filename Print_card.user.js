@@ -88,17 +88,15 @@ document.getElementsByTagName("head")[0].appendChild(scriptList);
 var scriptPicture = document.createElement('script');
 scriptPicture.type = 'text/javascript';
 scriptPicture.innerHTML =  'function setPicture(aCellPic, aPicture) {\
-aCellPic.style.transform="scale(0.7, 0.7)" ; /**/\
-aCellPic.style.width=Math.max(85, Math.round(0.7*aPicture.firstChild.firstChild.clientWidth)) ; \
-aCellPic.style.height=Math.round(0.7*aPicture.firstChild.firstChild.clientHeight) ; \
-/* debug newWin.document.write("aCellPic.style.width="+aCellPic.style.width +"<br>"); */ \
-/* debug newWin.document.write("aCellPic.style.height="+aCellPic.style.height +"<br>"); */ \
-aCellPic.style.padding = "0px 30px 5px 0px"; \
+aCellPic.innerHTML="<br>"; \
+aCellPic.style.width=Math.max(85, aPicture.firstChild.firstChild.clientWidth) ; \
+aCellPic.style.height=Math.max(100, aPicture.firstChild.firstChild.clientHeight) ; \
+aCellPic.style.padding = "0px 0px 0px 0px"; \
 aCellPic.style.margin = "0px 0px"; \
 aCellPic.style.verticalAlign="top"; \
 aCellPic.style.horizontalAlign="left"; \
 /* IMPORTANT */ aCellPic.style.cssFloat="left"; \
-aCellPic.innerHTML="<img src="+aPicture.firstChild.firstChild.src + ">"; \
+aCellPic.style.background="url(\'"+ aPicture.firstChild.firstChild.src + "\') center no-repeat"; \
 return aCellPic.style.width; \
 }';
 document.getElementsByTagName("head")[0].appendChild(scriptPicture);
