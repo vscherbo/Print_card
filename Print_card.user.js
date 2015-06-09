@@ -74,7 +74,7 @@ aCellList.style.padding = "5px 0px 0px 10px"; \
 aCellList.rowSpan=2; \
 aCellList.style.fontSize="11"; \
 aCellList.style.verticalAlign="top"; \
-aCellList.style.width="200px"; \
+aCellList.style.width="70%"; \
 var loc_tags; /* TO REMOVE */\
 for (var i=0; i<aList.children.length; i++) { \
   /* debug newWin.document.write("loc_tags loop i="+i +"<br>"); */ \
@@ -154,22 +154,33 @@ setPrice(cell_price, PriceToPrint[0], cell_pic.style.width); \
 /* newTab.appendChild(tr1); */\
 newTab.appendChild(tr2);\
 newTab.appendChild(tr3);\
-/* debug newWin.document.write("Before tags loop<br>"); */ \
-/* \
-if (tags !== undefined) { \
-  for (var i=0; i<tags.length; i++) { \
-    if (tags[i] !== undefined) { \
-   }\
-  }\
-}\
-*/ \
-     /* debug newWin.document.write("tags[" +i+ "].length=" +tags[i].length+"<br>"); */ \
-     /*for (img=0; img<tags[i].length; img++) { aWin.document.write(tags[i][img].outerHTML); } */\
 /* IMPORTANT */ newWin.document.write("<span></span>");\
 newTab.style.pageBreakInside = "avoid"; \
-aWin.document.body.appendChild(newTab); \
+return newTab; \
+/* aWin.document.body.appendChild(newTab); */ \
 }';
 document.getElementsByTagName("head")[0].appendChild(scriptPrintItem);
+
+/*********** CSS */
+var scriptPrintCSS = document.createElement('script');
+scriptPrintCSS.type = 'text/javascript';
+scriptPrintCSS.innerHTML =  'function printCSS(aDoc, aWin) { \
+var css = "table {width: 285px; float: left; background: #FFB547; border-width: 1px; border-right-style: dotted; border-bottom-style: dotted;} td {height: 20px; background: #FFB547; border: 1px dashed #FFB547;}"; \
+/*    td {height: 20px; background: #FFB547; border: 1px dashed #FFB547;}";  */\
+var cssRight = " table.right {width: 285px; float: right; background: #FFB547; border-width: 1px; border-left-style: dotted; border-bottom-style: dotted;}"; \
+var head = aDoc.head || aDoc.getElementsByTagName("head")[0]; \
+var style=aWin.document.createElement("style"); \
+style.type = "text/css"; \
+if (style.styleSheet){ \
+  style.styleSheet.cssText = css; \
+} else { \
+  style.appendChild(aDoc.createTextNode(css)); \
+} \
+style.appendChild(aDoc.createTextNode(cssRight)); \
+aWin.document.head.appendChild(style); \
+}';
+document.getElementsByTagName("head")[0].appendChild(scriptPrintCSS);
+
 
 /*********** Element */
 var scriptPrintSingle = document.createElement('script');
@@ -178,18 +189,9 @@ scriptPrintSingle.innerHTML =  'function printCard() { \
 newWin= window.open(""); \
 var itemDiv=document.getElementById("content"); \
 var headerToPrint=document.getElementById("pageheader"); \
-printItem(newWin, itemDiv, headerToPrint); \
-/****************** CSS */\
-var css = "table {width: 285px; background: #FFB547; border: 1px none;} td {height: 20px; background: #FFB547; border: 1px dashed #FFB547;}"; \
-var head = document.head || document.getElementsByTagName("head")[0]; \
-var style=newWin.document.createElement("style"); \
-style.type = "text/css"; \
-if (style.styleSheet){ \
-  style.styleSheet.cssText = css; \
-} else { \
-  style.appendChild(document.createTextNode(css)); \
-} \
-newWin.document.head.appendChild(style); \
+var printTab = printItem(newWin, itemDiv, headerToPrint); \
+newWin.document.body.appendChild(printTab); \
+printCSS(document, newWin); \
 newWin.document.close(); \
 }';
 document.getElementsByTagName("head")[0].appendChild(scriptPrintSingle);
@@ -200,6 +202,7 @@ scriptPrintList.type = 'text/javascript';
 scriptPrintList.innerHTML =  'function printList() { \
 newWin= window.open(""); \
 var catIterator=document.getElementById("catalog_items_content"); \
+var cnt=0; \
 for (var j=0; j<catIterator.children.length; j++) { \
   var catItem=catIterator.children[j]; \
   var Price=catItem.getElementsByClassName("catalog-item-price catalog-item-cloud"); \
@@ -208,25 +211,18 @@ for (var j=0; j<catIterator.children.length; j++) { \
   if ( Price.length > 0) { \
     var headers=catItem.getElementsByClassName("catalog_item_name_content"); \
     var headerToPrint=headers[0]; \
-    printItem(newWin, catItem, headerToPrint); \
+    var printTab = printItem(newWin, catItem, headerToPrint); \
+    newWin.document.body.appendChild(printTab); \
+    if (cnt % 2 === 1) printTab.className="right"; \
+    cnt++; \
   }\
-  newWin.document.write("<br>"); \
+  newWin.document.write("<br> <br>"); \
 }\
-/****************** CSS */\
-var css = "table {width: 285px; background: #FFB547; border: 1px none;} td {height: 20px; background: #FFB547; border: 1px dashed #FFB547;}" ; \
-var head = document.head || document.getElementsByTagName("head")[0]; \
-var style=newWin.document.createElement("style"); \
-style.type = "text/css"; \
-if (style.styleSheet){ \
-  style.styleSheet.cssText = css; \
-} else { \
-  style.appendChild(document.createTextNode(css)); \
-} \
-newWin.document.head.appendChild(style); \
+printCSS(document, newWin); \
+newWin.document.body.style.width="630px"; \
 newWin.document.close(); \
 }';
 document.getElementsByTagName("head")[0].appendChild(scriptPrintList);
-
 
 window.addButton = function () {
     // Get current URL
