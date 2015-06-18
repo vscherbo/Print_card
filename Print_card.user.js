@@ -165,9 +165,9 @@ document.getElementsByTagName("head")[0].appendChild(scriptPrintItem);
 var scriptPrintCSS = document.createElement('script');
 scriptPrintCSS.type = 'text/javascript';
 scriptPrintCSS.innerHTML =  'function printCSS(aDoc, aWin) { \
-var css = "table {width: 285px; float: left; background: #FFB547; border-width: 1px; border-right-style: dotted; border-bottom-style: dotted;} td {height: 20px; background: #FFB547; border: 1px dashed #FFB547;}"; \
-/*    td {height: 20px; background: #FFB547; border: 1px dashed #FFB547;}";  */\
-var cssRight = " table.right {width: 285px; float: right; background: #FFB547; border-width: 1px; border-left-style: dotted; border-bottom-style: dotted;}"; \
+var bgColor="#FFB547";\
+var css = "body {width: 630px; } table {width: 285px; float: left; background:" + bgColor + "; border-width: 1px; border-right-style: dotted; border-bottom-style: dotted;} td {height: 20px; border: 1px dashed " + bgColor + ";}" ;\
+var cssRight = " table.right {width: 285px; float: right; border-width: 1px; border-left-style: dotted; border-bottom-style: dotted;}"; \
 var head = aDoc.head || aDoc.getElementsByTagName("head")[0]; \
 var style=aWin.document.createElement("style"); \
 style.type = "text/css"; \
@@ -219,7 +219,6 @@ for (var j=0; j<catIterator.children.length; j++) { \
   newWin.document.write("<br> <br>"); \
 }\
 printCSS(document, newWin); \
-newWin.document.body.style.width="630px"; \
 newWin.document.close(); \
 }';
 document.getElementsByTagName("head")[0].appendChild(scriptPrintList);
