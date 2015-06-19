@@ -203,18 +203,28 @@ scriptPrintList.innerHTML =  'function printList() { \
 newWin= window.open(""); \
 var catIterator=document.getElementById("catalog_items_content"); \
 var cnt=0; \
+var chkBoxIgnore=true;\
+for (var j=0; j<catIterator.children.length; j++) { \
+  var catItem=catIterator.children[j]; \
+  if ( catItem.clientHeight === 0) { continue; } \
+  var chkBoxes=catItem.getElementsByClassName("classChkBox");\
+if (chkBoxes[0].checked) { chkBoxIgnore=false; break; }\
+}\
 for (var j=0; j<catIterator.children.length; j++) { \
   var catItem=catIterator.children[j]; \
   var Price=catItem.getElementsByClassName("catalog-item-price catalog-item-cloud"); \
   if ( catItem.clientHeight === 0) { continue; } \
   /* debug newWin.document.write("Price.length=",Price.length); */\
   if ( Price.length > 0) { \
-    var headers=catItem.getElementsByClassName("catalog_item_name_content"); \
-    var headerToPrint=headers[0]; \
-    var printTab = printItem(newWin, catItem, headerToPrint); \
-    newWin.document.body.appendChild(printTab); \
-    if (cnt % 2 === 1) printTab.className="right"; \
-    cnt++; \
+    var chkBoxes=catItem.getElementsByClassName("classChkBox");\
+    if (chkBoxIgnore || chkBoxes[0].checked) {\
+       var headers=catItem.getElementsByClassName("catalog_item_name_content"); \
+       var headerToPrint=headers[0]; \
+       var printTab = printItem(newWin, catItem, headerToPrint); \
+       newWin.document.body.appendChild(printTab); \
+       if (cnt % 2 === 1) printTab.className="right"; \
+       cnt++; \
+    }\
   }\
   newWin.document.write("<br> <br>"); \
 }\
@@ -244,11 +254,11 @@ window.addButton = function () {
    
     // Create a div to surround the button
     var newDiv = document.createElement('div');
-    newDiv.setAttribute('id', 'autoCheckOrder');
+    newDiv.setAttribute('id', 'idPrintCard');
 
     // Create the button and set its attributes
     var inputButton = document.createElement('input');
-    inputButton.name = 'autoCheckOrderButton';
+    inputButton.name = 'printCardButton';
     inputButton.type = 'button';
     inputButton.value = strTitle;
     inputButton.style.background = '#FFB547';
@@ -258,4 +268,39 @@ window.addButton = function () {
     newDiv.appendChild(inputButton); 
     targetDiv.appendChild(newDiv);
 }
+
+window.addChkBoxes = function() {
+   var contentDiv=document.getElementById("content");
+   var curURL=document.URL;
+   //if (curURL.indexOf('/element') = 0) { // list, not element
+      var catParent=document.getElementById("catalog_items");
+      var catIterator=document.getElementById("catalog_items_content");
+      for (var j=0; j<catIterator.children.length; j++) {
+          var catItem=catIterator.children[j];
+          var Price=catItem.getElementsByClassName("catalog-item-price catalog-item-cloud");
+          // var Extra=catItem.getElementsByClassName("catalog-item-picture-wrap");
+          if ( catItem.clientHeight === 0) { continue; }
+          if ( Price.length > 0) {
+             var cbDiv = document.createElement('div');
+             cbDiv.setAttribute('id', 'idCheckBox');
+             var chkBox = document.createElement('input');
+             chkBox.type = 'checkbox';
+             chkBox.id = 'chkbox';
+             chkBox.className = 'classChkBox';
+             var label = document.createElement('label')
+             label.htmlFor = 'chkbox';
+             label.appendChild(document.createTextNode('Печатать'));
+             label.style.fontSize="14px";
+             label.style.verticalAlign="2px";
+             //catItem.appendChild(chkBox);
+             //catItem.appendChild(label);
+             cbDiv.appendChild(chkBox);
+             cbDiv.appendChild(label);
+             catItem.appendChild(cbDiv);
+          }
+      }
+   //}
+}
+
 addButton();
+addChkBoxes();
