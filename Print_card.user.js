@@ -207,13 +207,16 @@ var chkBoxIgnore=true;\
 for (var j=0; j<catIterator.children.length; j++) { \
   var catItem=catIterator.children[j]; \
   if ( catItem.clientHeight === 0) { continue; } \
-  var chkBoxes=catItem.getElementsByClassName("classChkBox");\
-if (chkBoxes[0].checked) { chkBoxIgnore=false; break; }\
+  var Price=catItem.getElementsByClassName("catalog-item-price catalog-item-cloud"); \
+  if ( Price.length > 0)  { \
+     var chkBoxes=catItem.getElementsByClassName("classChkBox");\
+     if (chkBoxes[0].checked) { chkBoxIgnore=false; break; }\
+  }\
 }\
 for (var j=0; j<catIterator.children.length; j++) { \
   var catItem=catIterator.children[j]; \
-  var Price=catItem.getElementsByClassName("catalog-item-price catalog-item-cloud"); \
   if ( catItem.clientHeight === 0) { continue; } \
+  var Price=catItem.getElementsByClassName("catalog-item-price catalog-item-cloud"); \
   /* debug newWin.document.write("Price.length=",Price.length); */\
   if ( Price.length > 0) { \
     var chkBoxes=catItem.getElementsByClassName("classChkBox");\
