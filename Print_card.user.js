@@ -256,16 +256,26 @@ window.addButton = function () {
     var newDiv = document.createElement('div');
     newDiv.setAttribute('id', 'idPrintCard');
 
-    // Create the button and set its attributes
+    // Create the button `strTitle` and set its attributes
     var inputButton = document.createElement('input');
     inputButton.name = 'printCardButton';
     inputButton.type = 'button';
     inputButton.value = strTitle;
     inputButton.style.background = '#FFB547';
     inputButton.setAttribute("onclick", functionName); //"printCard();");
+  
+  // Create the button 'Возможность выбора' and set its attributes
+    var fixButton = document.createElement('input');
+    fixButton.name = 'fixCheckBoxex';
+    fixButton.type = 'button';
+    fixButton.value = 'Возможность выбора';
+    fixButton.style.background =  'darkseagreen'; //'#FFB547';
+    fixButton.setAttribute("onclick", "addChkBoxes();");
+  
 
     // Append the button to the div
     newDiv.appendChild(inputButton); 
+    newDiv.appendChild(fixButton); 
     targetDiv.appendChild(newDiv);
 }
 
@@ -279,6 +289,8 @@ window.addChkBoxes = function() {
           var catItem=catIterator.children[j];
           var Price=catItem.getElementsByClassName("catalog-item-price catalog-item-cloud");
           // var Extra=catItem.getElementsByClassName("catalog-item-picture-wrap");
+          var existedChkBoxes=catItem.getElementsByClassName("classChkBox");
+          if ( existedChkBoxes.length > 0 ) { continue; }
           if ( catItem.clientHeight === 0) { continue; }
           if ( Price.length > 0) {
              var cbDiv = document.createElement('div');
