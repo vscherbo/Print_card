@@ -210,6 +210,7 @@ for (var j=0; j<catIterator.children.length; j++) { \
   var Price=catItem.getElementsByClassName("catalog-item-price catalog-item-cloud"); \
   if ( Price.length > 0)  { \
      var chkBoxes=catItem.getElementsByClassName("classChkBox");\
+     /* Если есть помеченный чек-бокс, их игнорировать нельзя */ \
      if (chkBoxes[0].checked) { chkBoxIgnore=false; break; }\
   }\
 }\
@@ -220,6 +221,7 @@ for (var j=0; j<catIterator.children.length; j++) { \
   /* debug newWin.document.write("Price.length=",Price.length); */\
   if ( Price.length > 0) { \
     var chkBoxes=catItem.getElementsByClassName("classChkBox");\
+    /* Если нет ни одного отмеченного чек-бокса, то не проверяем их состояние */ \
     if (chkBoxIgnore || chkBoxes[0].checked) {\
        var headers=catItem.getElementsByClassName("catalog_item_name_content"); \
        var headerToPrint=headers[0]; \
@@ -267,18 +269,8 @@ window.addButton = function () {
     inputButton.style.background = '#FFB547';
     inputButton.setAttribute("onclick", functionName); //"printCard();");
   
-  // Create the button 'Возможность выбора' and set its attributes
-    var fixButton = document.createElement('input');
-    fixButton.name = 'fixCheckBoxex';
-    fixButton.type = 'button';
-    fixButton.value = 'Возможность выбора';
-    fixButton.style.background =  'darkseagreen'; //'#FFB547';
-    fixButton.setAttribute("onclick", "addChkBoxes();");
-  
-
     // Append the button to the div
     newDiv.appendChild(inputButton); 
-    newDiv.appendChild(fixButton); 
     targetDiv.appendChild(newDiv);
 }
 
@@ -294,7 +286,6 @@ window.addChkBoxes = function() {
           // var Extra=catItem.getElementsByClassName("catalog-item-picture-wrap");
           var existedChkBoxes=catItem.getElementsByClassName("classChkBox");
           if ( existedChkBoxes.length > 0 ) { continue; }
-          if ( catItem.clientHeight === 0) { continue; }
           if ( Price.length > 0) {
              var cbDiv = document.createElement('div');
              cbDiv.setAttribute('id', 'idCheckBox');
