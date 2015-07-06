@@ -65,11 +65,17 @@ var scriptList = document.createElement('script');
 scriptList.type = 'text/javascript';
 scriptList.innerHTML =  'function setList(aCellList, aList) {\
 var li_tags=aList.getElementsByTagName("li"); \
+var list_priceCard=document.createElement("ul"); \
 for (var l=0; l<Math.min(5, li_tags.length); l++) { \
   /* debug newWin.document.write("li_tags["+l + "]="+li_tags[l].outerHTML+"\\n"); */ \
   /* debug newWin.document.write("li_tags["+l + "].children.length="+li_tags[l].children.length+"\\n"); */ \
-  aCellList.innerHTML+=li_tags[l].outerHTML; \
+  var li_priceCard=document.createElement("LI"); \
+  var textItem = document.createTextNode(li_tags[l].textContent); \
+  li_priceCard.appendChild(textItem); \
+  list_priceCard.appendChild(li_priceCard); \
 } \
+list_priceCard.style.padding = "5px 0px 0px 10px"; \
+aCellList.innerHTML = list_priceCard.outerHTML; \
 aCellList.style.padding = "5px 0px 0px 10px"; \
 aCellList.rowSpan=2; \
 aCellList.style.fontSize="11"; \
