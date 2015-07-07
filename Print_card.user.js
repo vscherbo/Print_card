@@ -245,7 +245,6 @@ newWin.document.close(); \
 document.getElementsByTagName("head")[0].appendChild(scriptPrintList);
 
 window.addButton = function () {
-    // Get current URL
    var contentDiv=document.getElementById("content");
    var curURL=document.URL;
    var strTitle='';
@@ -260,7 +259,6 @@ window.addButton = function () {
      strTitle='Ценники';
      functionName="printList();";
    };
-    // Get the location on the page where you want to create the button
     
    
     // Create a div to surround the button
