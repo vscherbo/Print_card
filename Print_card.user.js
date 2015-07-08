@@ -24,13 +24,14 @@ var hcell=hrow.insertCell(0); \
 var imgMMYY=newWin.document.createElement("img"); \
 imgMMYY.innerHTML=mmyy; \
 imgMMYY.style.cssFloat= "right"; \
+imgMMYY.style.fontWeight="bold"; \
 imgMMYY.style.fontSize= "7"; \
 imgMMYY.style.margin="0px"; \
 hcell.appendChild(imgMMYY);\
 var divHeader=newWin.document.createElement("div"); \
 divHeader.innerHTML=aHeader.textContent; \
 divHeader.style.fontWeight="bold"; \
-divHeader.style.fontSize="18"; \
+divHeader.style.fontSize="16"; \
 hcell.appendChild(divHeader);\
 hcell.colSpan=2; \
 hcell.cssFloat="right"; \
@@ -78,7 +79,7 @@ list_priceCard.style.padding = "5px 0px 0px 10px"; \
 aCellList.innerHTML = list_priceCard.outerHTML; \
 aCellList.style.padding = "5px 0px 0px 10px"; \
 aCellList.rowSpan=2; \
-aCellList.style.fontSize="11"; \
+aCellList.style.fontSize="10"; \
 aCellList.style.verticalAlign="top"; \
 aCellList.style.width="70%"; \
 var loc_tags; /* TO REMOVE */\
@@ -119,7 +120,7 @@ if (pos_dots > 0) { \
 /* debug newWin.document.write("price_text="+price_text); */ \
 aCellPrice.innerHTML=price_text; \
 aCellPrice.align="center"; \
-aCellPrice.style.fontSize="16"; \
+aCellPrice.style.fontSize="18"; \
 aCellPrice.style.fontWeight="bold"; \
 aCellPrice.style.fontStyle="italic"; \
 aCellPrice.style.width=aPriceWidth ; \
