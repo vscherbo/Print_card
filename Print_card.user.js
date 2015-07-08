@@ -96,7 +96,7 @@ var scriptPicture = document.createElement('script');
 scriptPicture.type = 'text/javascript';
 scriptPicture.innerHTML =  'function setPicture(aCellPic, aPicture) {\
 aCellPic.innerHTML="<br>"; \
-aCellPic.style.width=Math.max(85, aPicture.firstChild.firstChild.clientWidth) ; \
+aCellPic.style.width=Math.max(100 /* 85 */, aPicture.firstChild.firstChild.clientWidth) ; \
 aCellPic.style.height=Math.max(100, aPicture.firstChild.firstChild.clientHeight) ; \
 aCellPic.style.padding = "0px 0px 0px 0px"; \
 aCellPic.style.margin = "0px 0px"; \
@@ -118,6 +118,15 @@ if (pos_dots > 0) { \
    price_text="от "+price_arr[0] + " р.";\
 } \
 /* debug newWin.document.write("price_text="+price_text); */ \
+var imgPrice=newWin.document.createElement("img"); \
+imgPrice.innerHTML=price_text; \
+imgPrice.style.cssFloat= "right"; \
+imgPrice.style.fontWeight="bold"; \
+imgPrice.style.fontSize= "18"; \
+imgPrice.style.fontStyle= "italic"; \
+imgPrice.style.margin="0px"; \
+aCellPrice.appendChild(imgPrice);\
+/* \
 aCellPrice.innerHTML=price_text; \
 aCellPrice.align="center"; \
 aCellPrice.style.fontSize="18"; \
@@ -126,7 +135,7 @@ aCellPrice.style.fontStyle="italic"; \
 aCellPrice.style.width=aPriceWidth ; \
 aCellPrice.style.height="20px" ; \
 aCellPrice.style.padding = "10px 0px 0px 0px"; \
-/* aCellPrice.colSpan=2; */ \
+*/ \
 }';
 document.getElementsByTagName("head")[0].appendChild(scriptPrice);
 
@@ -155,8 +164,8 @@ if (shortToPrint.length > 0 ) { \
 /****************** Price */\
 var PriceToPrint=aCatalogItem.getElementsByClassName("catalog-item-price catalog-item-cloud"); \
 var tr3 = aWin.document.createElement("tr"); \
-var cell_price=tr3.insertCell(0);\
-setPrice(cell_price, PriceToPrint[0], cell_pic.style.width); \
+var cell_price=tr3.insertCell(-1);\
+setPrice(cell_price, PriceToPrint[0], "280px"); \
 /****************** Add table rows */\
 /* newTab.appendChild(tr1); */\
 newTab.appendChild(tr2);\
