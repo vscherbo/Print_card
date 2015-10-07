@@ -187,7 +187,7 @@ setPrice(cell_price, PriceToPrint[0], "280px"); \
 /* newTab.appendChild(tr1); */\
 newTab.appendChild(tr2);\
 newTab.appendChild(tr3);\
-/* IMPORTANT */ newWin.document.write("<span></span>");\
+/* IMPORTANT  newWin.document.write("<span></span>"); */\
 newTab.style.pageBreakInside = "avoid"; \
 return newTab; \
 /* aWin.document.body.appendChild(newTab); */ \
@@ -201,7 +201,7 @@ scriptPrintCSS.innerHTML =  'function printCSS(aDoc, aWin) { \
 var bgColor="#FFB547";\
 /* PRODUCTION */ var css = "body {width: 630px; } table {width: 285px; float: left; background:" + bgColor + "; border-width: 1px; } td {height: 20px; border: 1px dashed " + bgColor + ";}" ; /**/\
 /* DEBUG var css = "body {width: 630px; } table {width: 285px; float: left; background:" + bgColor + "; border-width: 1px; } td {height: 20px; border: 1px dashed black;}" ; */\
-var cssRight = " table.right {float: right; }"; \
+var cssRight = " table.right { float: right; }"; \
 var head = aDoc.head || aDoc.getElementsByTagName("head")[0]; \
 var style=aWin.document.createElement("style"); \
 style.type = "text/css"; \
@@ -236,7 +236,6 @@ scriptPrintList.type = 'text/javascript';
 scriptPrintList.innerHTML =  'function printList() { \
 newWin= window.open(""); \
 var catIterator=document.getElementById("catalog_items_content"); \
-var cnt=0; \
 var chkBoxIgnore=true;\
 for (var j=0; j<catIterator.children.length; j++) { \
   var catItem=catIterator.children[j]; \
@@ -248,8 +247,12 @@ for (var j=0; j<catIterator.children.length; j++) { \
      if (chkBoxes[0].checked) { chkBoxIgnore=false; break; }\
   }\
 }\
-var leftTab=newWin.document.createElement("table") ;\
-var rightTab=newWin.document.createElement("table") ;\
+var cnt=1; \
+var heightOdd=0;   /* текущей нечётной карточки*/\
+var heightEven=0;  /* текущей чётной карточки*/\
+var heightLeft=0;  /* левый столбец нарастающим итогом */\
+var heightRight=0; /* правй столбец */\
+var tabOdd=newWin.document.createElement("table") ;\
 for (var j=0; j<catIterator.children.length; j++) { \
   var catItem=catIterator.children[j]; \
   if ( catItem.clientHeight === 0) { continue; } \
@@ -262,21 +265,31 @@ for (var j=0; j<catIterator.children.length; j++) { \
        var headers=catItem.getElementsByClassName("catalog_item_name_content"); \
        var headerToPrint=headers[0]; \
        var printTab = printItem(newWin, catItem, headerToPrint); \
-       printTab.style.borderStyle="none none dotted none";\
+       printTab.style.borderStyle="none dotted dotted dotted";\
        if (cnt % 2 === 1) { \
-          rightTab.appendChild(printTab);\
-           /* printTab.className="right"; */ \
-       } else { \
-          leftTab.appendChild(printTab);\
+           heightOdd = printTab.style.height; \
+           heightEven = 0; \
+           tabOdd=printTab;\
+       } else {\
+           heightEven = printTab.style.height; \
+       }\
+       if (heightLeft >= heightRight) {\
+           newWin.document.body.appendChild(printTab); \
+           tabOdd.className = "right"; \
+           newWin.document.body.appendChild(tabOdd); \
+           heightLeft+=heightEven;\
+           heightRight+=heightOdd;\
+       } else {\
+           newWin.document.body.appendChild(tabOdd); \
+           printTab.className = "right"; \
+           newWin.document.body.appendChild(printTab); \
+           heightLeft+=heightOdd;\
+           heightRight+=heightEven;\
        }\
        cnt++; \
     }\
+    /* newWin.document.write("<br> <br>"); */\
   }\
-  rightTab.className="right"; \
-  leftTab.className="left"; \
-  newWin.document.body.appendChild(leftTab); \
-  newWin.document.body.appendChild(rightTab); \
-  /* newWin.document.write("<br> <br>"); */\
 }\
 printCSS(document, newWin); \
 newWin.document.close(); \
