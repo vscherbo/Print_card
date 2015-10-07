@@ -82,7 +82,8 @@ aCellList.style.padding = "5px 0px 0px 10px"; \
 aCellList.rowSpan=2; \
 aCellList.style.fontSize="10"; \
 aCellList.style.verticalAlign="top"; \
-aCellList.style.width="50%"; \
+/* aCellList.style.width="50%"; */ \
+aCellList.style.width=138; \
 var loc_tags; /* TO REMOVE */\
 for (var i=0; i<aList.children.length; i++) { \
   /* debug newWin.document.write("loc_tags loop i="+i +"<br>"); */ \
@@ -96,12 +97,21 @@ document.getElementsByTagName("head")[0].appendChild(scriptList);
 var scriptPicture = document.createElement('script');
 scriptPicture.type = 'text/javascript';
 scriptPicture.innerHTML =  'function setPicture(aCellPic, aPicture) {\
+var maxWidth=138;\
 aCellPic.innerHTML="<br>"; \
 /* aCellPic.style.width=Math.min(125, Math.max(125, aPicture.firstChild.firstChild.clientWidth)) ; */ \
 /* aCellPic.style.width=Math.max(125, aPicture.firstChild.firstChild.clientWidth) ; */\
 /* aCellPic.style.height=Math.max(100, aPicture.firstChild.firstChild.clientHeight) ; */\
-aCellPic.style.width=138 ; \
-var resizeRatio=142/aPicture.firstChild.firstChild.clientWidth; \
+aCellPic.style.background="url(\'"+ aPicture.firstChild.firstChild.src + "\') center no-repeat"; \
+aCellPic.style.width=maxWidth ; \
+var resizeRatio=1;\
+/* debug  newWin.document.write("aPicture.firstChild.firstChild.clientWidth="+aPicture.firstChild.firstChild.clientWidth+"<br>"); */ \
+/* debug  newWin.document.write("aCellPic.style.width="+aCellPic.style.width+"<br>"); */ \
+if (aPicture.firstChild.firstChild.clientWidth > maxWidth) { \
+   resizeRatio=maxWidth/aPicture.firstChild.firstChild.clientWidth; \
+   /* debug  newWin.document.write("resizeRatio="+resizeRatio+"<br>"); */ \
+   aCellPic.style.backgroundSize=aCellPic.style.width; /*"142px"; " 150px"; ************************************/ \
+}\
 aCellPic.style.height=150*resizeRatio; \
 aCellPic.style.padding = "0px 0px 0px 0px"; \
 aCellPic.style.margin = "0px 0px"; \
@@ -109,8 +119,6 @@ aCellPic.style.verticalAlign="top"; \
 aCellPic.style.horizontalAlign="left"; \
 /* aCellPic.style.backgroundClip="content-box"; */\
 /* IMPORTANT */ aCellPic.style.cssFloat="left"; \
-aCellPic.style.background="url(\'"+ aPicture.firstChild.firstChild.src + "\') center no-repeat"; \
-aCellPic.style.backgroundSize=aCellPic.style.width; /*"142px"; " 150px"; ************************************/ \
 return aCellPic.style.width; \
 }';
 document.getElementsByTagName("head")[0].appendChild(scriptPicture);
@@ -191,8 +199,8 @@ var scriptPrintCSS = document.createElement('script');
 scriptPrintCSS.type = 'text/javascript';
 scriptPrintCSS.innerHTML =  'function printCSS(aDoc, aWin) { \
 var bgColor="#FFB547";\
-/* PRODUCTION var css = "body {width: 630px; } table {width: 285px; float: left; background:" + bgColor + "; border-width: 1px; } td {height: 20px; border: 1px dashed " + bgColor + ";}" ; */\
-var css = "body {width: 630px; } table {width: 285px; float: left; background:" + bgColor + "; border-width: 1px; } td {height: 20px; border: 1px dashed black;}" ; \
+/* PRODUCTION */ var css = "body {width: 630px; } table {width: 285px; float: left; background:" + bgColor + "; border-width: 1px; } td {height: 20px; border: 1px dashed " + bgColor + ";}" ; /**/\
+/* DEBUG var css = "body {width: 630px; } table {width: 285px; float: left; background:" + bgColor + "; border-width: 1px; } td {height: 20px; border: 1px dashed black;}" ; */\
 var cssRight = " table.right {float: right; }"; \
 var head = aDoc.head || aDoc.getElementsByTagName("head")[0]; \
 var style=aWin.document.createElement("style"); \
