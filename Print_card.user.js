@@ -3,6 +3,7 @@
 // @namespace   Print_card
 // @description Печатает ценник товара по описанию на сайте kipspb
 // @include     *kipspb.arc.world/catalog/*
+// @include     *kipspb-fl.arc.world/catalog/*
 // @include     *kipspb.ru/catalog/*
 // @version     1
 // @grant       none
@@ -81,7 +82,7 @@ aCellList.style.padding = "5px 0px 0px 10px"; \
 aCellList.rowSpan=2; \
 aCellList.style.fontSize="10"; \
 aCellList.style.verticalAlign="top"; \
-aCellList.style.width="70%"; \
+aCellList.style.width="50%"; \
 var loc_tags; /* TO REMOVE */\
 for (var i=0; i<aList.children.length; i++) { \
   /* debug newWin.document.write("loc_tags loop i="+i +"<br>"); */ \
@@ -96,14 +97,20 @@ var scriptPicture = document.createElement('script');
 scriptPicture.type = 'text/javascript';
 scriptPicture.innerHTML =  'function setPicture(aCellPic, aPicture) {\
 aCellPic.innerHTML="<br>"; \
-aCellPic.style.width=Math.max(100 /* 85 */, aPicture.firstChild.firstChild.clientWidth) ; \
-aCellPic.style.height=Math.max(100, aPicture.firstChild.firstChild.clientHeight) ; \
+/* aCellPic.style.width=Math.min(125, Math.max(125, aPicture.firstChild.firstChild.clientWidth)) ; */ \
+/* aCellPic.style.width=Math.max(125, aPicture.firstChild.firstChild.clientWidth) ; */\
+/* aCellPic.style.height=Math.max(100, aPicture.firstChild.firstChild.clientHeight) ; */\
+aCellPic.style.width=138 ; \
+var resizeRatio=142/aPicture.firstChild.firstChild.clientWidth; \
+aCellPic.style.height=150*resizeRatio; \
 aCellPic.style.padding = "0px 0px 0px 0px"; \
 aCellPic.style.margin = "0px 0px"; \
 aCellPic.style.verticalAlign="top"; \
 aCellPic.style.horizontalAlign="left"; \
+/* aCellPic.style.backgroundClip="content-box"; */\
 /* IMPORTANT */ aCellPic.style.cssFloat="left"; \
 aCellPic.style.background="url(\'"+ aPicture.firstChild.firstChild.src + "\') center no-repeat"; \
+aCellPic.style.backgroundSize=aCellPic.style.width; /*"142px"; " 150px"; ************************************/ \
 return aCellPic.style.width; \
 }';
 document.getElementsByTagName("head")[0].appendChild(scriptPicture);
@@ -117,6 +124,7 @@ if (pos_dots > 0) { \
    var price_arr=price_text.split("…"); \
    price_text="от "+price_arr[0] + " р.";\
 } \
+price_text=price_text.trim(); \
 /* debug newWin.document.write("price_text="+price_text); */ \
 var imgPrice=newWin.document.createElement("img"); \
 imgPrice.innerHTML=price_text; \
@@ -124,6 +132,7 @@ imgPrice.style.cssFloat= "right"; \
 imgPrice.style.fontWeight="bold"; \
 imgPrice.style.fontSize= "18"; \
 imgPrice.style.fontStyle= "italic"; \
+/* imgPrice.style.width="120px" ; TODO: empiric constant */ \
 imgPrice.style.margin="0px"; \
 aCellPrice.appendChild(imgPrice);\
 /* \
@@ -182,8 +191,9 @@ var scriptPrintCSS = document.createElement('script');
 scriptPrintCSS.type = 'text/javascript';
 scriptPrintCSS.innerHTML =  'function printCSS(aDoc, aWin) { \
 var bgColor="#FFB547";\
-var css = "body {width: 630px; } table {width: 285px; float: left; background:" + bgColor + "; border-width: 1px; border-right-style: dotted; border-bottom-style: dotted;} td {height: 20px; border: 1px dashed " + bgColor + ";}" ;\
-var cssRight = " table.right {width: 285px; float: right; border-width: 1px; border-left-style: dotted; border-bottom-style: dotted;}"; \
+/* PRODUCTION var css = "body {width: 630px; } table {width: 285px; float: left; background:" + bgColor + "; border-width: 1px; } td {height: 20px; border: 1px dashed " + bgColor + ";}" ; */\
+var css = "body {width: 630px; } table {width: 285px; float: left; background:" + bgColor + "; border-width: 1px; } td {height: 20px; border: 1px dashed black;}" ; \
+var cssRight = " table.right {float: right; }"; \
 var head = aDoc.head || aDoc.getElementsByTagName("head")[0]; \
 var style=aWin.document.createElement("style"); \
 style.type = "text/css"; \
@@ -230,6 +240,8 @@ for (var j=0; j<catIterator.children.length; j++) { \
      if (chkBoxes[0].checked) { chkBoxIgnore=false; break; }\
   }\
 }\
+var leftTab=newWin.document.createElement("table") ;\
+var rightTab=newWin.document.createElement("table") ;\
 for (var j=0; j<catIterator.children.length; j++) { \
   var catItem=catIterator.children[j]; \
   if ( catItem.clientHeight === 0) { continue; } \
@@ -242,12 +254,21 @@ for (var j=0; j<catIterator.children.length; j++) { \
        var headers=catItem.getElementsByClassName("catalog_item_name_content"); \
        var headerToPrint=headers[0]; \
        var printTab = printItem(newWin, catItem, headerToPrint); \
-       newWin.document.body.appendChild(printTab); \
-       if (cnt % 2 === 1) printTab.className="right"; \
+       printTab.style.borderStyle="none none dotted none";\
+       if (cnt % 2 === 1) { \
+          rightTab.appendChild(printTab);\
+           /* printTab.className="right"; */ \
+       } else { \
+          leftTab.appendChild(printTab);\
+       }\
        cnt++; \
     }\
   }\
-  newWin.document.write("<br> <br>"); \
+  rightTab.className="right"; \
+  leftTab.className="left"; \
+  newWin.document.body.appendChild(leftTab); \
+  newWin.document.body.appendChild(rightTab); \
+  /* newWin.document.write("<br> <br>"); */\
 }\
 printCSS(document, newWin); \
 newWin.document.close(); \
