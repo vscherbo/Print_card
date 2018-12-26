@@ -3,6 +3,7 @@
 // @namespace   Print_card
 // @description Печатает ценник товара по описанию на сайте kipspb
 // @include     *kipspb.arc.world/catalog/*
+// @include     *kipspb-dev.arc.world/catalog/*
 // @include     *kipspb.ru/catalog/*
 // @version     1
 // @grant       none
@@ -96,14 +97,19 @@ var scriptPicture = document.createElement('script');
 scriptPicture.type = 'text/javascript';
 scriptPicture.innerHTML =  'function setPicture(aCellPic, aPicture) {\
 aCellPic.innerHTML="<br>"; \
-aCellPic.style.width=Math.max(100 /* 85 */, aPicture.firstChild.firstChild.clientWidth) ; \
-aCellPic.style.height=Math.max(100, aPicture.firstChild.firstChild.clientHeight) ; \
+w1=Math.max(100 /* 85 */, aPicture.firstChild.firstChild.clientWidth) ; \
+console.log("aCellPic.style.width1="+w1); \
+aCellPic.style.width=Math.min(150, w1) ; \
+console.log("aCellPic.style.width2="+aCellPic.style.width); \
+h1=Math.max(100, aPicture.firstChild.firstChild.clientHeight) ; \
+aCellPic.style.height=Math.min(115, h1) ; \
 aCellPic.style.padding = "0px 0px 0px 0px"; \
 aCellPic.style.margin = "0px 0px"; \
 aCellPic.style.verticalAlign="top"; \
 aCellPic.style.horizontalAlign="left"; \
 /* IMPORTANT */ aCellPic.style.cssFloat="left"; \
 aCellPic.style.background="url(\'"+ aPicture.firstChild.firstChild.src + "\') center no-repeat"; \
+aCellPic.style.backgroundSize="contain"; \
 return aCellPic.style.width; \
 }';
 document.getElementsByTagName("head")[0].appendChild(scriptPicture);
@@ -158,6 +164,7 @@ if (shortToPrint.length > 0 ) { \
   var tags = setList(cell_list, shortToPrint[0]); \
   /****************** Picture */\
   var pictureToPrint=aCatalogItem.getElementsByClassName("catalog-item-picture"); \
+console.log(pictureToPrint); \
   var cell_pic=tr2.insertCell(1); \
   setPicture(cell_pic,pictureToPrint[0]); \
 } \
@@ -181,7 +188,7 @@ document.getElementsByTagName("head")[0].appendChild(scriptPrintItem);
 var scriptPrintCSS = document.createElement('script');
 scriptPrintCSS.type = 'text/javascript';
 scriptPrintCSS.innerHTML =  'function printCSS(aDoc, aWin) { \
-var bgColor="#FFB547";\
+var bgColor="#FFF";\
 var css = "body {width: 630px; } table {width: 285px; float: left; background:" + bgColor + "; border-width: 1px; border-right-style: dotted; border-bottom-style: dotted;} td {height: 20px; border: 1px dashed " + bgColor + ";}" ;\
 var cssRight = " table.right {width: 285px; float: right; border-width: 1px; border-left-style: dotted; border-bottom-style: dotted;}"; \
 var head = aDoc.head || aDoc.getElementsByTagName("head")[0]; \
@@ -203,7 +210,7 @@ var scriptPrintSingle = document.createElement('script');
 scriptPrintSingle.type = 'text/javascript';
 scriptPrintSingle.innerHTML =  'function printCard() { \
 newWin= window.open(""); \
-var itemDiv=document.getElementById("content"); \
+var itemDiv=document.getElementsByClassName("catalog-item")[0]; \
 var headerToPrint=document.getElementById("pageheader"); \
 var printTab = printItem(newWin, itemDiv, headerToPrint); \
 newWin.document.body.appendChild(printTab); \
@@ -255,7 +262,7 @@ newWin.document.close(); \
 document.getElementsByTagName("head")[0].appendChild(scriptPrintList);
 
 window.addButton = function () {
-   var contentDiv=document.getElementById("content");
+   var contentDiv=document.getElementById("wrap_content");
    var curURL=document.URL;
    var strTitle='';
    var functionName='';
@@ -293,7 +300,8 @@ window.addChkBoxes = function() {
    var curURL=document.URL;
    //if (curURL.indexOf('/element') = 0) { // list, not element
       var catParent=document.getElementById("catalog_items");
-      var catIterator=document.getElementById("catalog_items_content");
+      // OLD var catIterator=document.getElementById("catalog_items_content");
+      var catIterator=document.getElementsByClassName("catalog-item-text")[0];
       for (var j=0; j<catIterator.children.length; j++) {
           var catItem=catIterator.children[j];
           var Price=catItem.getElementsByClassName("catalog-item-price catalog-item-cloud");
@@ -324,3 +332,4 @@ window.addChkBoxes = function() {
 
 addButton();
 addChkBoxes();
+
