@@ -97,16 +97,19 @@ var scriptPicture = document.createElement('script');
 scriptPicture.type = 'text/javascript';
 scriptPicture.innerHTML =  'function setPicture(aCellPic, aPicture) {\
 aCellPic.innerHTML="<br>"; \
-w1=Math.max(100 /* 85 */, aPicture.firstChild.firstChild.clientWidth) ; \
+var imgs = aPicture.getElementsByTagName("img"); \
+loc_pict=imgs[0]; \
+/* loc_pict=aPicture.firstChild.firstChild; */\
+w1=Math.max(100 /* 85 */, loc_pict.clientWidth) ; \
 aCellPic.style.width=Math.min(150, w1) ; \
-h1=Math.max(100, aPicture.firstChild.firstChild.clientHeight) ; \
+h1=Math.max(100, loc_pict.clientHeight) ; \
 aCellPic.style.height=Math.min(115, h1) ; \
 aCellPic.style.padding = "0px 0px 0px 0px"; \
 aCellPic.style.margin = "0px 0px"; \
 aCellPic.style.verticalAlign="top"; \
 aCellPic.style.horizontalAlign="left"; \
 /* IMPORTANT */ aCellPic.style.cssFloat="left"; \
-aCellPic.style.background="url(\'"+ aPicture.firstChild.firstChild.src + "\') center no-repeat"; \
+aCellPic.style.background="url(\'"+ loc_pict.src + "\') center no-repeat"; \
 aCellPic.style.backgroundSize="contain"; \
 return aCellPic.style.width; \
 }';
@@ -162,7 +165,8 @@ if (shortToPrint.length > 0 ) { \
   var tags = setList(cell_list, shortToPrint[0]); \
   /****************** Picture */\
   var pictureToPrint=aCatalogItem.getElementsByClassName("catalog-item-picture"); \
-console.log(pictureToPrint); \
+/** console.log("pictureToPrint[0].innerHTML="+pictureToPrint[0].innerHTML); \
+console.log("pictureToPrint[0].firstElementChild.currentSrc="+pictureToPrint[0].firstElementChild.currentSrc); **/ \
   var cell_pic=tr2.insertCell(1); \
   setPicture(cell_pic,pictureToPrint[0]); \
 } \
@@ -208,7 +212,7 @@ var scriptPrintSingle = document.createElement('script');
 scriptPrintSingle.type = 'text/javascript';
 scriptPrintSingle.innerHTML =  'function printCard() { \
 newWin= window.open(""); \
-var itemDiv=document.getElementsByClassName("catalog-item")[0]; \
+var itemDiv=document.getElementsByClassName("catalog-item")[0].firstElementChild; \
 var headerToPrint=document.getElementById("pageheader"); \
 var printTab = printItem(newWin, itemDiv, headerToPrint); \
 newWin.document.body.appendChild(printTab); \
@@ -225,7 +229,6 @@ newWin= window.open(""); \
 var catIterator=document.getElementById("catalog_items_content"); \
 var cnt=0; \
 var chkBoxIgnore=true;\
-console.log("catIterator.children.length="+catIterator.children.length); \
 for (var j=0; j<catIterator.children.length; j++) { \
   var catItem=catIterator.children[j]; \
   if ( catItem.clientHeight === 0) { continue; } \
